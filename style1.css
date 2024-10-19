@@ -1,0 +1,37 @@
+body {
+    background-color: #f1f1f1;
+}
+
+.signup-box {
+    max-width: 900px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.signup-box .bg-primary {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.signup-box .bg-white {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+button {
+    border-radius: 30px;
+}
+
+form .btn-light {
+    border: 1px solid #ddd;
+}

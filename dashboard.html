@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Client Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+
+        .profile-header {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            border: 5px solid white;
+            border-radius: 50%;
+        }
+
+        .profile-info {
+            padding: 10px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .active-case {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        .comment-box {
+            margin-bottom: 15px;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        
+
+
+
+        .new-post {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Client Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Cases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Profile Header -->
+        <div class="container profile-header">
+            <div class="row">
+                <div class="col-md-2">
+                    <img id="profilePic" src="" alt="Profile Picture" width="100" height="100">
+                </div>
+                <div class="col-md-8">
+                    <h3>Janice Griffith</h3>
+                    <p>Group Admin</p>
+                </div>
+                <div class="col-md-2 text-right">
+                    <button id="requestBtn" class="btn btn-primary">Request</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-8">
+                    <!-- Post Form -->
+                    <div class="card">
+                        <div class="card-body">
+                            <textarea id="postContent" class="form-control" rows="3" placeholder="Write something..."></textarea>
+                            <button id="publishBtn" class="btn btn-primary mt-2">Publish</button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Posts Section -->
+                    <div id="postSection">
+                        <!-- Existing Sample Post -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Janice Griffith</h5>
+                                <p>Published: June 2, 2018, 19:19 PM</p>
+                                <p>World's most beautiful car in Curabitur...</p>
+                                <img src="image-url" alt="Post Image" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comment Section -->
+                    <div class="card comments-section">
+                        <div class="card-body">
+                            <h5 class="card-title">Comments</h5>
+                            <div id="commentList"></div>
+                            <textarea id="commentInput" class="form-control comment-box" placeholder="Add a comment..."></textarea>
+                            <button class="btn btn-secondary" onclick="addComment()">Post Comment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-4">
+                    <div class="active-case">
+                        <h4>Active Case</h4>
+                        <p><strong>Case Title:</strong> Client vs Company</p>
+                        <p><strong>Status:</strong> Ongoing</p>
+                        <p><strong>Next Hearing:</strong> December 12, 2024</p>
+                        <p><strong>Client Details:</strong> John Doe</p>
+                        <p><strong>Notes:</strong> Awaiting further evidence from the defendant side.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        // Random Profile Picture Array
+        const profilePictures = [
+            'https://randomuser.me/api/portraits/women/1.jpg',
+            'https://randomuser.me/api/portraits/women/2.jpg',
+            'https://randomuser.me/api/portraits/women/3.jpg',
+            'https://randomuser.me/api/portraits/women/4.jpg'
+        ];
+
+        // Function to Load Random Profile Picture
+        function loadRandomProfilePicture() {
+            const randomIndex = Math.floor(Math.random() * profilePictures.length);
+            document.getElementById('profilePic').src = profilePictures[randomIndex];
+        }
+
+        // Call the function on page load
+        window.onload = loadRandomProfilePicture;
+
+        // Request Button Interaction
+        document.getElementById('requestBtn').addEventListener('click', function () {
+            this.innerHTML = 'Requested';
+            this.disabled = true;
+        });
+
+        // Post Publish Functionality
+        document.getElementById('publishBtn').addEventListener('click', function() {
+            const postContent = document.getElementById('postContent').value.trim();
+
+            if (postContent) {
+                const postSection = document.getElementById('postSection');
+
+                // Create a new post card
+                const newPostCard = document.createElement('div');
+                newPostCard.classList.add('card', 'new-post');
+                
+                const currentTime = new Date();
+                const formattedTime = currentTime.toLocaleString();
+
+                newPostCard.innerHTML = `
+                    <div class="card-body">
+                        <h5 class="card-title">Janice Griffith</h5>
+                        <p>Published: ${formattedTime}</p>
+                        <p>${postContent}</p>
+                    </div>
+                `;
+
+                // Add the new post to the top of the post section
+                postSection.prepend(newPostCard);
+
+                // Clear the textarea after posting
+                document.getElementById('postContent').value = '';
+            } else {
+                alert('Post content cannot be empty.');
+            }
+        });
+
+        // Comment Section Functionality
+        function addComment() {
+            const commentInput = document.getElementById('commentInput');
+            const commentText = commentInput.value;
+            if (commentText) {
+                const commentList = document.getElementById('commentList');
+                const commentElement = document.createElement('p');
+                commentElement.innerText = commentText;
+                commentList.appendChild(commentElement);
+                commentInput.value = ''; // Clear the comment box
+            }
+        }
+    </script>
+</body>
+</html>
